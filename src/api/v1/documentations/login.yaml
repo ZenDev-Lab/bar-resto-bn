@@ -1,0 +1,34 @@
+paths:
+  /auth/login:
+    post:
+      tags:
+        - "Auth"
+      summary: "Login in Your Account"
+      description: "Login A user Account"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                  example: email
+                password:
+                  type: "string"
+                  example: "8digitslonger"
+      responses:
+        200:
+          description: You will Get The Object of Your User id and token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: "string"
+                    example: "fwe67dKSD-DAFADF"
+                  token:
+                    type: "string"
+                    example: "fwe67dKSD-DAFADF"
