@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout
+        uses: actions/checkout@v4
       - name: Install Dependencies
         run: npm install
       - name: Run Tests
@@ -22,7 +22,7 @@ jobs:
     needs: [test]
     steps:
       - name: Checkout Repo
-        uses: actions/checkout
+        uses: actions/checkout@v4
       - name: Install Dependencies
         run: npm install
       - name: Run build
@@ -34,7 +34,7 @@ jobs:
 
     steps:
       - name: Deploy To Render
-        uses: johnbeynon/render-deploy-action
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{secrets.PRO_SERVICE_ID}}
           api-key: ${{secrets.RENDER_API_KEY}}
