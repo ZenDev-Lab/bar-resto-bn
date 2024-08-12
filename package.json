@@ -6,7 +6,12 @@
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "dev:migrate": "prisma migrate dev",
+    "dev:generate": "prisma generate"
+  },
+  "prisma": {
+    "schema": "src/api/v1/prisma/schema.prisma"
   },
   "repository": {
     "type": "git",
@@ -36,9 +41,11 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@prisma/client": "^5.18.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "prisma": "^5.18.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   }
