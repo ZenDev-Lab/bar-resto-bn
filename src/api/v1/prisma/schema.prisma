@@ -9,8 +9,8 @@ datasource db {
 
 model Users {
   userId        String     @id @default(uuid())
-  profile       String?
-  username      String
+  profile       String     @default("https://i.ibb.co/pxBCG33/default-profile.jpg")
+  username      String     @unique
   firstName     String
   lastName      String
   email         String     @unique
