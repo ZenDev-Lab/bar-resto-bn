@@ -8,17 +8,81 @@ datasource db {
 }
 
 model Users {
-  userId String @id @default(uuid())
-  name   String
-  email  String @unique
-  age    Int
-  role   Role   @default(Cashier)
+  userId        String     @id @default(uuid())
+  profile       String?
+  firstName     String
+  lastName      String
+  email         String     @unique
+  password      String
+  age           Int?
+  role          RoleType   @default(waiter)
+  phoneNumber   String
+  contract      String
+  waiterOrders  Orders[]   @relation("waiterOrders")
+  cashierOrders Orders[]   @relation("cashierOrders")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  products      Products[]
 }
 
-enum Role {
-  Admin
-  Cashier
-  Kitchen
-  Finance
-  Beverage
+model Orders {
+  orderId   String     @id @default(uuid())
+  type      OrderType?
+  waiterId  String
+  status    StatusType @default(pending)
+  table     String?
+  waiter    Users      @relation("waiterOrders", fields: [waiterId], references: [userId])
+  cashierId String
+  cashier   Users      @relation("cashierOrders", fields: [cashierId], references: [userId])
+  items     Json
+}
+
+model Menu {
+  itemId   String  @id @default(uuid())
+  name     String
+  price    String
+  quantity String?
+}
+
+model Products {
+  productId      String       @id @default(uuid())
+  name           String
+  expirationDate String?
+  entiryDate     DateTime
+  category       CategoryType
+  price          String
+  supplier       String
+  quantity       String
+  stockerId      String
+  stoker         Users        @relation(fields: [stockerId], references: [userId])
+}
+
+enum RoleType {
+  admin
+  cashier
+  chief
+  finance
+  beverage
+  stocker
+  waiter
+}
+
+enum StatusType {
+  pending
+  processing
+  ready
+  delivered
+  paid
+}
+
+enum OrderType {
+  drink
+  food
+}
+
+enum CategoryType {
+  food
+  beverage
+  cleaning
+  utensil
 }
