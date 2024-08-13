@@ -3,13 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Users {
   userId        String     @id @default(uuid())
   profile       String?
+  username      String
   firstName     String
   lastName      String
   email         String     @unique
