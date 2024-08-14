@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET as string;
 export default async (req: Request, res: Response) => {
@@ -10,8 +12,9 @@ export default async (req: Request, res: Response) => {
     });
     res.json({ token, user: { username, profile } });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", message: error.message });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
   }
 };

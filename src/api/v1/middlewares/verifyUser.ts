@@ -38,8 +38,9 @@ export default async function verifyUser(
 
     nextFn();
   } catch (error: any) {
-    return res
-      .status(500)
-      .json({ error: "Internal Server Error", message: error.message });
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
   }
 }
