@@ -1,6 +1,6 @@
 import request from "supertest";
 import express from "express";
-import login from "../controllers/auth/login";
+import login from "../controllers/auth/loginUser";
 describe("Get /Login", () => {
   let app: express.Express;
   beforeAll(() => {
