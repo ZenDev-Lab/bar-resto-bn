@@ -11,7 +11,8 @@
     "dev:generate": "prisma generate"
   },
   "prisma": {
-    "schema": "src/api/v1/prisma/schema.prisma"
+    "schema": "src/api/v1/prisma/schema.prisma",
+    "seed": "ts-node src/api/v1/prisma/seed.ts"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
