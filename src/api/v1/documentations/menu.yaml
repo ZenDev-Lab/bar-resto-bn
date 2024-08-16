@@ -1,0 +1,242 @@
+openapi: 3.0.0
+info:
+  title: Menu Management API
+  description: API for managing menu items in a restaurant system.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local development server
+paths:
+  /menu:
+    post:
+      tags:
+        - "Menu"
+      summary: "Create a New Menu Item"
+      description: "Adds a new item to the menu."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  example: "Pizza"
+                price:
+                  type: "string"
+                  example: "10.00"
+                quantity:
+                  type: "string"
+                  example: "100"
+      responses:
+        201:
+          description: "Menu item created successfully"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Menu item created successfully"
+                  menuItem:
+                    type: "object"
+                    properties:
+                      itemId:
+                        type: "string"
+                        example: "abc123"
+                      name:
+                        type: "string"
+                        example: "Pizza"
+                      price:
+                        type: "string"
+                        example: "10.00"
+                      quantity:
+                        type: "string"
+                        example: "100"
+        400:
+          description: "Invalid request data"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Invalid request data"
+        500:
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Server error message"
+    get:
+      tags:
+        - "Menu"
+      summary: "Retrieve All Menu Items"
+      description: "Fetches all items from the menu."
+      responses:
+        200:
+          description: "List of menu items"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    itemId:
+                      type: "string"
+                      example: "abc123"
+                    name:
+                      type: "string"
+                      example: "Pizza"
+                    price:
+                      type: "string"
+                      example: "10.00"
+                    quantity:
+                      type: "string"
+                      example: "100"
+        500:
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Server error message"
+  /menu/{itemId}:
+    put:
+      tags:
+        - "Menu"
+      summary: "Update an Existing Menu Item"
+      description: "Updates the details of a menu item."
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: "string"
+            example: "abc123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                  example: "Spaghetti"
+                price:
+                  type: "string"
+                  example: "8.00"
+                quantity:
+                  type: "string"
+                  example: "25"
+      responses:
+        200:
+          description: "Menu item updated successfully"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Menu item updated successfully"
+                  menuItem:
+                    type: "object"
+                    properties:
+                      itemId:
+                        type: "string"
+                        example: "abc123"
+                      name:
+                        type: "string"
+                        example: "Spaghetti"
+                      price:
+                        type: "string"
+                        example: "8.00"
+                      quantity:
+                        type: "string"
+                        example: "25"
+        400:
+          description: "Invalid request data"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Invalid request data"
+        404:
+          description: "Menu item not found"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Menu item not found"
+        500:
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Server error message"
+    delete:
+      tags:
+        - "Menu"
+      summary: "Delete a Menu Item"
+      description: "Removes a menu item from the system."
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: "string"
+            example: "abc123"
+      responses:
+        200:
+          description: "Menu item deleted successfully"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+                    example: "Menu item deleted successfully"
+        404:
+          description: "Menu item not found"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Menu item not found"
+        500:
+          description: "Server error"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error:
+                    type: "string"
+                    example: "Server error message"

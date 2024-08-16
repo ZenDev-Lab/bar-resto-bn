@@ -3,6 +3,8 @@ import cors from "cors";
 import apiv1 from "./api/v1/routes/main";
 import dotenv from "dotenv";
 import { ConnectDb } from "./api/v1/utils/connectDb";
+import menuRoute from "./api/v1/routes/menuRoute";
+
 dotenv.config();
 
 const app = express();
@@ -21,3 +23,4 @@ ConnectDb()
     console.log(res.error);
   });
 app.use("/api/v1", apiv1);
+app.use("/menu", menuRoute);
