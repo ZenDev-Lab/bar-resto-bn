@@ -1,29 +1,31 @@
-import { users } from "./Users";
-import { Products } from "./Products";
 import { PrismaClient } from "@prisma/client";
+import { createUsers } from "./Users";
+import { MenuItems } from "./menu";
 
-
-
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const main = async () => {
-    for(let user of users) {
+    // Seed users
+    const users = await createUsers();
+    for (let user of users) {
         await prisma.users.create({
-            data: user
-        })
+            data: user,
+        });
     }
 
 
-    // for(let product of Products) {
-    //     await prisma.products.create({
-    //         data: product
-    //     })
-    // }
-}
+    for (let item of MenuItems) {
+        await prisma.menu.create({
+            data: item,
+        });
+    }
+};
 
-main().catch((e) => {
-    console.log(e)
-    process.exit(1)
-}).finally(() => {
-    prisma.$disconnect()
-})
+main()
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })
+    .finally(() => {
+        prisma.$disconnect();
+    });

@@ -5,17 +5,25 @@ import { Request, Response } from "express";
 import { verifyCashier } from "../middlewares/checkUser";
 import { viewOrder } from "../services/order.service";
 import { verifyGetOrder } from "../middlewares/checkUser";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import crypto from "crypto"
+dotenv.config();
 export const createOrder = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
-    const user = await prisma.users.findUnique({
-      where: { userId },
-    });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Token not provided" });
+    }
+    let tokenData;
+    try {
+      tokenData = jwt.verify(token, `${process.env.JWT_SECRET}`) as any;
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
     }
 
-    const checkPermission: any = await verifyWaiter(user);
+    const checkPermission: any = await verifyWaiter(tokenData);
     if (!checkPermission.allowed) {
       return res
         .status(403)
@@ -30,7 +38,11 @@ export const createOrder = async (req: Request, res: Response) => {
     if (!cashier.allowed) {
       return res.status(404).json({ message: cashier.message });
     }
-    const result = await newOrder(type, userId, table, cashierId, items);
+    console.log('first')
+    const resetToken = crypto.randomInt(1000, 10000);
+
+    console.log('->token', token)
+    const result = await newOrder(type, userId, table, cashierId, items, resetToken);
 
     res.status(201).json({ message: "Order placed successfully", result });
   } catch (error: any) {
@@ -51,27 +63,27 @@ export const getOrder = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Order not found" });
     }
     const user = await verifyGetOrder(userId);
-    if (user.user.role === "waiter") {
-      if (user.user.userId === order.waiterId) {
-        const result = await viewOrder(orderId);
-        return res.status(200).json({ message: "Order found", result });
-      } else {
-        return res
-          .status(403)
-          .json({ message: `you are not allowed to view this` });
-      }
-    }
+    // if (user.user.role === "waiter") {
+    //   if (user.user.userId === order.waiterId) {
+    //     const result = await viewOrder(orderId);
+    //     return res.status(200).json({ message: "Order found", result });
+    //   } else {
+    //     return res
+    //       .status(403)
+    //       .json({ message: `you are not allowed to view this` });
+    //   }
+    // }
 
-    if (user.user.role === "cashier") {
-      if (user.user.userId === order.cashierId) {
-        const result = await viewOrder(orderId);
-        return res.status(200).json({ message: "Order found", result });
-      } else {
-        return res
-          .status(403)
-          .json({ message: `you are not allowed to view this` });
-      }
-    }
+    // if (user.user.role === "cashier") {
+    //   if (user.user.userId === order.cashierId) {
+    //     const result = await viewOrder(orderId);
+    //     return res.status(200).json({ message: "Order found", result });
+    //   } else {
+    //     return res
+    //       .status(403)
+    //       .json({ message: `you are not allowed to view this` });
+    //   }
+    // }
     return res.status(200).json({ message: "Order found", order });
   } catch (error: any) {
     res.status(500).json({ message: error.message });

@@ -6,7 +6,8 @@ export const newOrder = async (
   waiterId: string,
   table: string,
   cashierId: string,
-  items: any
+  items: any,
+  token: number
 ) => {
     const order = await prisma.orders.create({
         data: {
@@ -15,6 +16,7 @@ export const newOrder = async (
             table,
             cashierId,
             items,
+            token
         }
     })
     return order;

@@ -13,7 +13,6 @@ export const newProduct = async (
   quantity: string,
   stockerId: string
 ) => {
-  console.log('--inside service');
   
   const product = await prisma.products.create({
     data: {

@@ -1,7 +1,14 @@
 import prisma from "../utils/connectDb";
 
-export const verifyStocker = async (data: any) => {
-  if (data.role !== "stocker") {
+export const verifyStocker = async (tokenData: any) => {
+  if (!tokenData.role) {
+    return {
+      allowed: false,
+      message: "Invalid role",
+    };
+  }
+
+  if (tokenData.role !== "stocker") {
     return {
       allowed: false,
       message: "Only stock keeper is allowed to create product",
@@ -11,14 +18,20 @@ export const verifyStocker = async (data: any) => {
   return { allowed: true };
 };
 
-export const verifyWaiter = async (data: any) => {
-  if (data.role !== "waiter") {
+export const verifyWaiter = async (tokenData: any) => {
+  if (!tokenData.role) {
+    return {
+      allowed: false,
+      message: "Invalid role",
+    };
+  }
+  
+  if (tokenData.role !== "waiter") {
     return {
       allowed: false,
       message: "Only waiter is allowed to create order",
     };
   }
-
   return { allowed: true };
 };
 
@@ -31,7 +44,7 @@ export const verifyCashier = async (userId: any) => {
   if (!user) {
     return {
       allowed: false,
-      message: "User not found",
+      message: "Cashier not found",
     };
   } else if (user.role !== "cashier") {
     return {
@@ -44,7 +57,6 @@ export const verifyCashier = async (userId: any) => {
 };
 
 export const verifyGetOrder = async (userId: string) => {
-    console.log('-->inside get order')
   const user: any = await prisma.users.findUnique({
     where: {
       userId,
@@ -53,13 +65,12 @@ export const verifyGetOrder = async (userId: string) => {
   if (!user) {
     return {
       allowed: false,
-      message: "User not found",
+      message: "User nottttt found",
     };
-  } 
-  else if (user.role === "cashier" || user.role === "waiter") {
+  } else if (user.role === "cashier" || user.role === "waiter") {
     return {
       allowed: true,
-      user
+      user,
     };
   }
 
