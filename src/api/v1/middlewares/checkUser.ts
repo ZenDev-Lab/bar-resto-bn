@@ -65,9 +65,9 @@ export const verifyGetOrder = async (userId: string) => {
   if (!user) {
     return {
       allowed: false,
-      message: "User nottttt found",
+      message: "User not found",
     };
-  } else if (user.role === "cashier" || user.role === "waiter") {
+  } else if (user.role === "cashier" || user.role === "waiter" || user.role === "chief" || user.role === "finance" || user.role === "admin") {
     return {
       allowed: true,
       user,
