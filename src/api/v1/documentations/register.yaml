@@ -1,0 +1,112 @@
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      description: This endpoint allows an admin to register a new user.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: johndoe
+                firstName:
+                  type: string
+                  example: John
+                lastName:
+                  type: string
+                  example: Doe
+                email:
+                  type: string
+                  example: johndoe@example.com
+                age:
+                  type: integer
+                  example: 25
+                role:
+                  type: string
+                  example: user
+                contract:
+                  type: string
+                  example: permanent
+                phoneNumber:
+                  type: string
+                  example: "+123456789"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "User created successfully"
+                  newUser:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "User already exists"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Internal server error"
+                  error:
+                    type: string
+                    example: "ErrorName"
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        age:
+          type: integer
+        role:
+          type: string
+        contract:
+          type: string
+        phoneNumber:
+          type: string
+        password:
+          type: string
+

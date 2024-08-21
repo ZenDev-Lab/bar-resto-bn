@@ -1,13 +1,26 @@
+
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
+const jwtSecret = process.env.JWT_SECRET as string;
 export default async (req: Request, res: Response) => {
-  if (!req.body.email || !req.body.password)
-    return res.status(400).json({ badreq: "invalid Credentials" });
+  const { userId, role, email, profile } = req.body;
+  try {
+    const token = jwt.sign({ userId, role }, jwtSecret, {
+      expiresIn: "1d",
+    });
+        res
+          .cookie("access_token", token, { httpOnly: true })
+          .status(201)
+          .json({  user: { email, profile } });
 
-  res
-    .json({
-      userId: "ukfjaldf",
-      token: "string",
-    })
-    .status(200);
+
+  } catch (error: any) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
 };

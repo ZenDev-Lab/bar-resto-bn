@@ -3,13 +3,15 @@ import cors from "cors";
 import apiv1 from "./api/v1/routes/main";
 import dotenv from "dotenv";
 import { ConnectDb } from "./api/v1/utils/connectDb";
+import cookieParser from 'cookie-parser'
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "*", credentials: true }));
+app.use(cookieParser());
 
 ConnectDb()
   .then((res) => {

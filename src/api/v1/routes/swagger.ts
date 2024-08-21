@@ -23,7 +23,7 @@ const options: Options = {
     openapi: "3.0.0",
     servers: [
       {
-        url: "http://localhost:4000/api/v1",
+        url: "http://localhost:3000/api/v1",
       },
     ],
   },
@@ -34,3 +34,4 @@ const swaggerSpec = swaggerJSDoc(options);
 swaggerRoute.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default swaggerRoute;
+
