@@ -5,7 +5,7 @@ import verifyUser from "../middlewares/verifyUser";
 
 const ordersRoute = express.Router()
 
-ordersRoute.post('/create-order/:id', createOrder)
-ordersRoute.get('/:userId/:orderId', getOrder)
+ordersRoute.post('/create-order/', createOrder)
+ordersRoute.get('/:orderId', getOrder)
 
 export default ordersRoute

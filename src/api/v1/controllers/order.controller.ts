@@ -11,7 +11,6 @@ import crypto from "crypto"
 dotenv.config();
 export const createOrder = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id;
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ message: "Token not provided" });
@@ -22,12 +21,13 @@ export const createOrder = async (req: Request, res: Response) => {
     } catch (err) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
+    const userId = tokenData.userId
 
     const checkPermission: any = await verifyWaiter(tokenData);
     if (!checkPermission.allowed) {
       return res
         .status(403)
-        .json({ message: "You are not allowed to create an order" });
+        .json({ message: "Only waiter is allowed to create an order" });
     }
 
     const { type, table, cashierId, items } = req.body;
@@ -38,10 +38,8 @@ export const createOrder = async (req: Request, res: Response) => {
     if (!cashier.allowed) {
       return res.status(404).json({ message: cashier.message });
     }
-    console.log('first')
     const resetToken = crypto.randomInt(1000, 10000);
 
-    console.log('->token', token)
     const result = await newOrder(type, userId, table, cashierId, items, resetToken);
 
     res.status(201).json({ message: "Order placed successfully", result });
@@ -53,7 +51,17 @@ export const createOrder = async (req: Request, res: Response) => {
 export const getOrder = async (req: Request, res: Response) => {
   try {
     const orderId = req.params.orderId;
-    const userId = req.params.userId;
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Token not provided" });
+    }
+    let tokenData;
+    try {
+      tokenData = jwt.verify(token, `${process.env.JWT_SECRET}`) as any;
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+    const userId = tokenData.userId
     const checkPermission = await verifyGetOrder(userId);
     if (!checkPermission.allowed) {
       return res.status(403).json({ message: checkPermission.message });
