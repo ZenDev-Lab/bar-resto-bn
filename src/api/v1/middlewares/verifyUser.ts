@@ -35,7 +35,6 @@ export default async function verifyUser(
     req.body.userId = user.userId;
     req.body.profile = user.profile;
     req.body.role = user.role;
-
     nextFn();
   } catch (error: any) {
     return res.status(500).json({

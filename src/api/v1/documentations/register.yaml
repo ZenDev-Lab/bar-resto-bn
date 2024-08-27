@@ -5,6 +5,8 @@ paths:
       description: This endpoint allows an admin to register a new user.
       tags:
         - Authentication
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -40,7 +42,7 @@ paths:
                   type: string
                   example: "password123"
       responses:
-        '201':
+        "201":
           description: User created successfully
           content:
             application/json:
@@ -54,8 +56,8 @@ paths:
                     type: string
                     example: "User created successfully"
                   newUser:
-                    $ref: '#/components/schemas/User'
-        '401':
+                    $ref: "#/components/schemas/User"
+        "401":
           description: User already exists
           content:
             application/json:
@@ -68,7 +70,7 @@ paths:
                   message:
                     type: string
                     example: "User already exists"
-        '500':
+        "500":
           description: Internal server error
           content:
             application/json:
@@ -109,4 +111,3 @@ components:
           type: string
         password:
           type: string
-

@@ -7,6 +7,6 @@ import verifyUser from "../middlewares/verifyUser";
 const authRoute = express.Router();
 
 authRoute.post("/login",verifyUser,login);
-authRoute.post("/register",register);
+authRoute.post("/register",isAdmin,register);
 
 export default authRoute;

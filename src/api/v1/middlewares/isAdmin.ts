@@ -4,8 +4,9 @@ import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET as string;
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.cookies.access_token;
+      const token = req.headers.authorization?.split(" ")[1];
 
+ 
   if (!token) {
     return res
       .status(401)
@@ -18,6 +19,7 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     }
 
     const { role } = decoded;
+
 
     // Allow admin to only create user
     if (role === "admin") {
