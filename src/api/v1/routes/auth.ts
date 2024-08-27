@@ -1,8 +1,9 @@
 import express from "express";
-import login from "../controllers/auth/login";
+import verifyUser from "../middlewares/verifyUser";
+import loginUser from "../controllers/auth/loginUser";
 
 const authRoute = express.Router();
 
-authRoute.post("/login", login);
+authRoute.post("/login", verifyUser, loginUser);
 
 export default authRoute;

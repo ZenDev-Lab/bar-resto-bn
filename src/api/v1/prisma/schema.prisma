@@ -55,7 +55,7 @@ model Products {
   supplier       String
   quantity       String
   stockerId      String
-  stoker         Users        @relation(fields: [stockerId], references: [userId])
+  stocker         Users        @relation(fields: [stockerId], references: [userId])
 }
 
 enum RoleType {
